@@ -1,0 +1,14 @@
+[package]
+name = "just-self"
+version = "0.1.0"
+authors = ["Randy Schütt <rswhite4@googlemail.com>"]
+edition = "2018"
+
+[dependencies]
+just-core = { path = "../just-core" }
+walkdir = "2.2.7"
+url = "1.7.2"
+duct = "0.11"
+structopt = "0.2.14"
+remove_dir_all = "0.5.1"
+is_executable = "0.1.0"
