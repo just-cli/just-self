@@ -1,5 +1,6 @@
 use just_core::kernel::Folder;
 use just_core::result::BoxedResult;
+use std::env::consts::EXE_SUFFIX;
 use structopt::StructOpt;
 use url::Url;
 
@@ -16,15 +17,15 @@ fn prepend_just_prefix(name: &str) -> String {
     }
 }
 
-#[derive(StructOpt, Debug)]
-#[structopt(name = "self")]
-struct Opt {
-    #[structopt(long = "add")]
-    pub add: Option<String>,
-    #[structopt(long = "remove")]
-    pub remove: Option<String>,
-    #[structopt(long = "list")]
-    pub list: bool,
+#[derive(StructOpt)]
+#[structopt(name = "self", about = "...")]
+enum JustSelf {
+    #[structopt(name = "add")]
+    Add { url: String },
+    #[structopt(name = "remove")]
+    Remove { name: String },
+    #[structopt(name = "list")]
+    List,
 }
 
 fn list(folder: &Folder) -> BoxedResult<()> {
@@ -115,7 +116,7 @@ fn add(url: &str, folder: &Folder) -> BoxedResult<()> {
     )
     .run()?;
 
-    let exe_name = format!("{}.exe", repo);
+    let exe_name = format!("{}{}", repo, EXE_SUFFIX);
     let target_path = repo_path.join("target").join("release").join(&exe_name);
     let exe_name = prepend_just_prefix(&exe_name);
     let bin_path = folder.bin_path.join(exe_name);
@@ -129,7 +130,7 @@ fn add(url: &str, folder: &Folder) -> BoxedResult<()> {
 fn remove(name: &str, folder: &Folder) -> BoxedResult<()> {
     use std::fs::remove_file;
 
-    let exe_name = format!("{}.exe", name);
+    let exe_name = format!("{}{}", name, EXE_SUFFIX);
     let exe_name = prepend_just_prefix(&exe_name);
     let bin_path = folder.bin_path.join(exe_name);
 
@@ -141,14 +142,10 @@ fn main() -> BoxedResult<()> {
 
     let kernel = Kernel::load();
 
-    let opt: Opt = Opt::from_args();
-    if opt.list {
-        list(&kernel.path)
-    } else if let Some(url) = opt.add {
-        add(&url, &kernel.path)
-    } else if let Some(name) = opt.remove {
-        remove(&name, &kernel.path)
-    } else {
-        Ok(())
+    let args: JustSelf = JustSelf::from_args();
+    match args {
+        JustSelf::Add { url } => add(&url, &kernel.path),
+        JustSelf::Remove { name } => remove(&name, &kernel.path),
+        JustSelf::List => list(&kernel.path),
     }
 }
