@@ -100,6 +100,7 @@ dependencies = [
  "duct 0.11.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "is_executable 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "just-core 0.1.0 (git+https://github.com/just-cli/just-core)",
+ "log 0.4.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "remove_dir_all 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "structopt 0.2.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "url 1.7.2 (registry+https://github.com/rust-lang/crates.io-index)",

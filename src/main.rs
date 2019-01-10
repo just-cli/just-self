@@ -89,6 +89,7 @@ fn get_repository_name(url: &str) -> BoxedResult<String> {
 
 fn add(url: &str, folder: &Folder) -> BoxedResult<()> {
     use duct::cmd;
+    use log::debug;
     use remove_dir_all::remove_dir_all;
     use std::env::current_dir;
     use std::fs::copy;
@@ -98,13 +99,13 @@ fn add(url: &str, folder: &Folder) -> BoxedResult<()> {
     let cargo_path = repo_path.join("Cargo.toml");
 
     if repo_path.exists() {
-        println!("Remove existing {:?}", repo_path);
+        debug!("Remove existing {:?}", repo_path);
         remove_dir_all(&repo_path)?;
     }
 
-    println!("Clone {:?} from git", url);
+    debug!("Clone {:?} from git", url);
     cmd("git", &["clone", &url]).run()?;
-    println!("Build {:?} with cargo", cargo_path);
+    debug!("Build {:?} with cargo", cargo_path);
     cmd(
         "cargo",
         &[
@@ -121,7 +122,7 @@ fn add(url: &str, folder: &Folder) -> BoxedResult<()> {
     let exe_name = prepend_just_prefix(&exe_name);
     let bin_path = folder.bin_path.join(exe_name);
 
-    println!("Copy {:?} into {:?}", target_path, bin_path);
+    debug!("Copy {:?} into {:?}", target_path, bin_path);
 
     copy(&target_path, &bin_path)?;
     remove_dir_all(&repo_path).map_err(|e| e.into())
