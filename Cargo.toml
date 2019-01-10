@@ -5,7 +5,7 @@ authors = ["Randy Schütt <rswhite4@googlemail.com>"]
 edition = "2018"
 
 [dependencies]
-just-core = { path = "../just-core" }
+just-core = { git = "https://github.com/just-cli/just-core" }
 walkdir = "2.2.7"
 url = "1.7.2"
 duct = "0.11"
