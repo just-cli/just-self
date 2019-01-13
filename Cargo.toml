@@ -6,10 +6,5 @@ edition = "2018"
 
 [dependencies]
 just-core = { git = "https://github.com/just-cli/just-core" }
-walkdir = "2.2.7"
-url = "1.7.2"
-duct = "0.11"
+just-extension = { git = "https://github.com/just-cli/just-extension" }
 structopt = "0.2.14"
-remove_dir_all = "0.5.1"
-is_executable = "0.1.0"
-log = "0.4"
